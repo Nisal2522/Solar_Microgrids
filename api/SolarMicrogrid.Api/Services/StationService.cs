@@ -44,7 +44,6 @@ public class StationService
         return StationResponse.FromModel(station);
     }
 
-    /*
     // Tops up bookable slots for an existing station from its current schedule
     // (covers stations registered before auto-generation existed, and extends
     // the rolling window as time passes). Returns how many slots were created.
@@ -67,7 +66,6 @@ public class StationService
         var station = await GetByIdOrThrow(id);
         return StationResponse.FromModel(station);
     }
-    */
 
     // Updates capacity, battery slot counts and the operating schedule.
     public async Task<StationResponse> UpdateAsync(string id, UpdateStationRequest request)
@@ -106,7 +104,6 @@ public class StationService
         return StationResponse.FromModel(station);
     }
 
-    /*
     // Returns active stations within radiusKm of the given point (haversine, in-memory filter).
     public async Task<List<StationResponse>> GetNearbyAsync(double lat, double lng, double radiusKm)
     {
@@ -131,7 +128,6 @@ public class StationService
 
     // Converts degrees to radians.
     private static double DegreesToRadians(double degrees) => degrees * Math.PI / 180;
-    */
 
     // Fetches a station by id or throws a 404 AppException.
     private async Task<SolarStation> GetByIdOrThrow(string id)
