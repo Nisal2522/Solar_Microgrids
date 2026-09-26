@@ -10,33 +10,32 @@ import apiClient from "../../api/client";
 import StatCard from "../../components/ui/StatCard";
 import { Card, CardHeader } from "../../components/ui/Card";
 import DataTable from "../../components/ui/DataTable";
-// import Button from "../../components/ui/Button";
-// import { Field, Input, Select } from "../../components/ui/Field";
+import Button from "../../components/ui/Button";
+import { Field, Input, Select } from "../../components/ui/Field";
 import { StatusBadge } from "../../components/ui/Badge";
-// import Modal from "../../components/ui/Modal";
-// import Drawer from "../../components/ui/Drawer";
-// import { useToast } from "../../components/ui/Toast";
+import Modal from "../../components/ui/Modal";
+import Drawer from "../../components/ui/Drawer";
+import { useToast } from "../../components/ui/Toast";
 import {
-  BatteryIcon, BoltIcon, MapPinIcon, StationIcon,
-  // AlertIcon, CalendarIcon, PlusIcon, XIcon,
+  AlertIcon, BatteryIcon, BoltIcon, CalendarIcon, MapPinIcon, PlusIcon, StationIcon, XIcon,
 } from "../../components/ui/Icons";
 
-// const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-// const EMPTY_FORM = {
-//   stationName: "", lat: "", lng: "", capacityKWh: "", totalBatterySlots: "",
-//   schedule: [{ day: "Monday", openTime: "08:00", closeTime: "18:00" }],
-// };
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const EMPTY_FORM = {
+  stationName: "", lat: "", lng: "", capacityKWh: "", totalBatterySlots: "",
+  schedule: [{ day: "Monday", openTime: "08:00", closeTime: "18:00" }],
+};
 
-// Renders the node directory table and the summary stat cards above it.
+// Renders the node directory plus the registration dialog.
 export default function StationsPage() {
   const [stations, setStations] = useState([]);
-  // const [form, setForm] = useState(EMPTY_FORM);
+  const [form, setForm] = useState(EMPTY_FORM);
   const [loading, setLoading] = useState(true);
-  // const [saving, setSaving] = useState(false);
-  // const [formOpen, setFormOpen] = useState(false);
-  // const [confirm, setConfirm] = useState(null);
-  // const [generatingId, setGeneratingId] = useState(null);
-  // const toast = useToast();
+  const [saving, setSaving] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
+  const [confirm, setConfirm] = useState(null);
+  const [generatingId, setGeneratingId] = useState(null);
+  const toast = useToast();
 
   // Loads every station, active and deactivated.
   async function loadStations() {
@@ -51,75 +50,75 @@ export default function StationsPage() {
 
   useEffect(() => { loadStations(); }, []);
 
-  // // Updates one field of one schedule row.
-  // function updateScheduleRow(index, field, value) {
-  //   setForm({ ...form, schedule: form.schedule.map((row, i) => (i === index ? { ...row, [field]: value } : row)) });
-  // }
-  //
-  // // Appends another operating-hours row.
-  // function addScheduleRow() {
-  //   setForm({ ...form, schedule: [...form.schedule, { day: "Monday", openTime: "08:00", closeTime: "18:00" }] });
-  // }
-  //
-  // // Removes an operating-hours row.
-  // function removeScheduleRow(index) {
-  //   setForm({ ...form, schedule: form.schedule.filter((_, i) => i !== index) });
-  // }
-  //
-  // // Creates the station from the dialog form values.
-  // async function handleCreate(e) {
-  //   e.preventDefault();
-  //   setSaving(true);
-  //   try {
-  //     await apiClient.post("/stations", {
-  //       stationName: form.stationName,
-  //       lat: parseFloat(form.lat),
-  //       lng: parseFloat(form.lng),
-  //       capacityKWh: parseFloat(form.capacityKWh),
-  //       totalBatterySlots: parseInt(form.totalBatterySlots, 10),
-  //       schedule: form.schedule,
-  //     });
-  //     toast.success(`${form.stationName} registered.`);
-  //     setForm(EMPTY_FORM);
-  //     setFormOpen(false);
-  //     await loadStations();
-  //   } catch (err) {
-  //     toast.error(err.response?.data?.message || "Could not create this station.");
-  //   } finally {
-  //     setSaving(false);
-  //   }
-  // }
-  //
-  // // Deactivates the station confirmed in the dialog.
-  // async function applyDeactivate() {
-  //   const station = confirm;
-  //   setConfirm(null);
-  //   try {
-  //     await apiClient.put(`/stations/${station.id}/deactivate`);
-  //     toast.success(`${station.stationName} deactivated.`);
-  //     await loadStations();
-  //   } catch (err) {
-  //     toast.error(err.response?.data?.message || "Could not deactivate this station.");
-  //   }
-  // }
-  //
-  // // Tops up bookable slots for a station from its schedule (also covers stations
-  // // registered before slot auto-generation, and extends the rolling window over time).
-  // async function handleGenerateSlots(station) {
-  //   setGeneratingId(station.id);
-  //   try {
-  //     const { data } = await apiClient.post(`/stations/${station.id}/generate-slots`);
-  //     toast.success(
-  //       data.created > 0
-  //         ? `${data.created} new slot${data.created === 1 ? "" : "s"} generated for ${station.stationName}.`
-  //         : `${station.stationName} is already up to date — no new slots needed.`
-  //     );
-  //   } catch (err) {
-  //     toast.error(err.response?.data?.message || "Could not generate slots for this station.");
-  //   } finally {
-  //     setGeneratingId(null);
-  //   }
-  // }
+  // Updates one field of one schedule row.
+  function updateScheduleRow(index, field, value) {
+    setForm({ ...form, schedule: form.schedule.map((row, i) => (i === index ? { ...row, [field]: value } : row)) });
+  }
+
+  // Appends another operating-hours row.
+  function addScheduleRow() {
+    setForm({ ...form, schedule: [...form.schedule, { day: "Monday", openTime: "08:00", closeTime: "18:00" }] });
+  }
+
+  // Removes an operating-hours row.
+  function removeScheduleRow(index) {
+    setForm({ ...form, schedule: form.schedule.filter((_, i) => i !== index) });
+  }
+
+  // Creates the station from the dialog form values.
+  async function handleCreate(e) {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      await apiClient.post("/stations", {
+        stationName: form.stationName,
+        lat: parseFloat(form.lat),
+        lng: parseFloat(form.lng),
+        capacityKWh: parseFloat(form.capacityKWh),
+        totalBatterySlots: parseInt(form.totalBatterySlots, 10),
+        schedule: form.schedule,
+      });
+      toast.success(`${form.stationName} registered.`);
+      setForm(EMPTY_FORM);
+      setFormOpen(false);
+      await loadStations();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Could not create this station.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  // Deactivates the station confirmed in the dialog.
+  async function applyDeactivate() {
+    const station = confirm;
+    setConfirm(null);
+    try {
+      await apiClient.put(`/stations/${station.id}/deactivate`);
+      toast.success(`${station.stationName} deactivated.`);
+      await loadStations();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Could not deactivate this station.");
+    }
+  }
+
+  // Tops up bookable slots for a station from its schedule (also covers stations
+  // registered before slot auto-generation, and extends the rolling window over time).
+  async function handleGenerateSlots(station) {
+    setGeneratingId(station.id);
+    try {
+      const { data } = await apiClient.post(`/stations/${station.id}/generate-slots`);
+      toast.success(
+        data.created > 0
+          ? `${data.created} new slot${data.created === 1 ? "" : "s"} generated for ${station.stationName}.`
+          : `${station.stationName} is already up to date — no new slots needed.`
+      );
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Could not generate slots for this station.");
+    } finally {
+      setGeneratingId(null);
+    }
+  }
 
   // Column definitions for the station directory table. Each entry maps a
   // station field to a header and a custom cell renderer.
@@ -198,26 +197,26 @@ export default function StationsPage() {
     },
     // Status: Active / Deactivated badge.
     { key: "status", header: "Status", render: (s) => <StatusBadge status={s.status} /> },
-    // {
-    //   key: "actions",
-    //   header: "",
-    //   className: "text-right whitespace-nowrap",
-    //   render: (s) =>
-    //     s.status === "Active" ? (
-    //       <div className="flex items-center justify-end gap-2">
-    //         <Button
-    //           size="sm"
-    //           variant="subtle"
-    //           icon={CalendarIcon}
-    //           disabled={generatingId === s.id}
-    //           onClick={() => handleGenerateSlots(s)}
-    //         >
-    //           {generatingId === s.id ? "Generating…" : "Generate slots"}
-    //         </Button>
-    //         <Button size="sm" variant="dangerGhost" onClick={() => setConfirm(s)}>Deactivate</Button>
-    //       </div>
-    //     ) : null,
-    // },
+    {
+      key: "actions",
+      header: "",
+      className: "text-right whitespace-nowrap",
+      render: (s) =>
+        s.status === "Active" ? (
+          <div className="flex items-center justify-end gap-2">
+            <Button
+              size="sm"
+              variant="subtle"
+              icon={CalendarIcon}
+              disabled={generatingId === s.id}
+              onClick={() => handleGenerateSlots(s)}
+            >
+              {generatingId === s.id ? "Generating…" : "Generate slots"}
+            </Button>
+            <Button size="sm" variant="dangerGhost" onClick={() => setConfirm(s)}>Deactivate</Button>
+          </div>
+        ) : null,
+    },
   ];
 
   // Summary figures for the stat cards, derived from the loaded station list.
@@ -241,7 +240,7 @@ export default function StationsPage() {
           icon={StationIcon}
           title="Microgrid nodes"
           description="Solar hubs available for prosumer energy drop-off and charging."
-          // actions={<Button icon={PlusIcon} onClick={() => setFormOpen(true)}>Register node</Button>}
+          actions={<Button icon={PlusIcon} onClick={() => setFormOpen(true)}>Register node</Button>}
         />
         <DataTable
           columns={columns}
@@ -251,12 +250,12 @@ export default function StationsPage() {
             icon: StationIcon,
             title: "No microgrid nodes yet",
             description: "Register the first solar hub to start accepting prosumer energy bookings.",
-            // action: <Button icon={PlusIcon} onClick={() => setFormOpen(true)}>Register node</Button>,
+            action: <Button icon={PlusIcon} onClick={() => setFormOpen(true)}>Register node</Button>,
           }}
         />
       </Card>
 
-      {/* Registration panel
+      {/* Registration panel */}
       <Drawer
         open={formOpen}
         onClose={() => setFormOpen(false)}
@@ -324,9 +323,8 @@ export default function StationsPage() {
           </div>
         </form>
       </Drawer>
-      */}
 
-      {/* Deactivation confirmation
+      {/* Deactivation confirmation */}
       <Modal
         open={Boolean(confirm)}
         onClose={() => setConfirm(null)}
@@ -341,7 +339,6 @@ export default function StationsPage() {
           </>
         }
       />
-      */}
     </div>
   );
 }
