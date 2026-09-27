@@ -1,9 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: HistoryActivity.kt
-// Purpose: Full booking history for the signed-in prosumer, with a live search
-//          box and quick status filter chips over reservation code and status.
-// Module owner: Member C (Booking Views & Operational Dashboards)
-// -----------------------------------------------------------------------------
 package com.solarmicrogrid.app.prosumer
 
 import android.content.Intent

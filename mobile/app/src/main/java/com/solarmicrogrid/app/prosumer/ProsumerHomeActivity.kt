@@ -1,10 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: ProsumerHomeActivity.kt
-// Purpose: Prosumer dashboard — approved/pending reservation counts and the
-//          upcoming-bookings list read live from the API, plus bottom
-//          navigation to the map, history and profile screens.
-// Module owner: Member C (Booking Views & Operational Dashboards)
-// -----------------------------------------------------------------------------
 package com.solarmicrogrid.app.prosumer
 
 import android.content.Intent
