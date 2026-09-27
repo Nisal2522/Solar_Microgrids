@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand (grid / sustainability) -->
+    <color name="brand_50">#ECFDF5</color>
+    <color name="brand_100">#D1FAE5</color>
+    <color name="brand_200">#A7F3D0</color>
+    <color name="brand_300">#6EE7B7</color>
+    <color name="brand_400">#34D399</color>
+    <color name="brand_500">#10B981</color>
+    <color name="brand_600">#059669</color>
+    <color name="brand_700">#047857</color>
+    <color name="brand_800">#065F46</color>
+    <color name="brand_900">#064E3B</color>
+
+    <!-- Solar accent (energy / sunlight) -->
+    <color name="solar_50">#FFFBEB</color>
+    <color name="solar_100">#FEF3C7</color>
+    <color name="solar_200">#FDE68A</color>
+    <color name="solar_400">#FBBF24</color>
+    <color name="solar_500">#F59E0B</color>
+    <color name="solar_600">#D97706</color>
+
+    <!-- Ink / dark surfaces -->
+    <color name="ink_700">#1E293B</color>
+    <color name="ink_800">#101A2C</color>
+    <color name="ink_900">#0A1220</color>
+
+    <!-- Neutrals -->
+    <color name="slate_50">#F8FAFC</color>
+    <color name="slate_100">#F1F5F9</color>
+    <color name="slate_200">#E2E8F0</color>
+    <color name="slate_300">#CBD5E1</color>
+    <color name="slate_400">#94A3B8</color>
+    <color name="slate_500">#64748B</color>
+    <color name="slate_600">#475569</color>
+    <color name="slate_700">#334155</color>
+    <color name="slate_800">#1E293B</color>
+    <color name="slate_900">#0F172A</color>
+
+    <!-- Semantic -->
+    <color name="sky_50">#F0F9FF</color>
+    <color name="sky_600">#0284C7</color>
+    <color name="sky_700">#0369A1</color>
+    <color name="rose_50">#FFF1F2</color>
+    <color name="rose_500">#F43F5E</color>
+    <color name="rose_600">#E11D48</color>
+    <color name="rose_700">#BE123C</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="page_background">#F6F8FB</color>
+
+    <!-- Legacy aliases kept so older references still resolve -->
+    <color name="emerald_700">#047857</color>
+    <color name="emerald_800">#065F46</color>
+    <color name="emerald_50">#ECFDF5</color>
+    <color name="red_600">#E11D48</color>
+</resources>
