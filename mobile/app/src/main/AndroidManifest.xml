@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:theme="@style/Theme.SolarMicrogrid"
+        android:usesCleartextTraffic="true">
+
+        <!-- Replace with a real key before using MapActivity / running on a device with Play Services. -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_api_key" />
+
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SolarMicrogrid.Dark">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".auth.RegisterActivity" android:exported="false"
+            android:theme="@style/Theme.SolarMicrogrid.Dark" />
+
+        <activity android:name=".prosumer.ProsumerHomeActivity" android:exported="false"
+            android:theme="@style/Theme.SolarMicrogrid.Dark" />
+        <activity android:name=".prosumer.MapActivity" android:exported="false" />
+        <activity android:name=".prosumer.HistoryActivity" android:exported="false"
+            android:theme="@style/Theme.SolarMicrogrid.Dark" />
+        <activity android:name=".prosumer.ProfileActivity" android:exported="false"
+            android:theme="@style/Theme.SolarMicrogrid.Dark" />
+        <activity android:name=".prosumer.ReservationFormActivity" android:exported="false"
+            android:theme="@style/Theme.SolarMicrogrid.Dark" />
+        <activity android:name=".prosumer.ReservationDetailActivity" android:exported="false"
+            android:theme="@style/Theme.SolarMicrogrid.Dark" />
+
+        <activity android:name=".operator.OperatorHomeActivity" android:exported="false"
+            android:theme="@style/Theme.SolarMicrogrid.Dark" />
+        <activity android:name=".operator.ScanActivity" android:exported="false"
+            android:theme="@style/Theme.SolarMicrogrid.Dark" />
+        <activity android:name=".operator.TransferConfirmActivity" android:exported="false"
+            android:theme="@style/Theme.SolarMicrogrid.Dark" />
+
+    </application>
+</manifest>
