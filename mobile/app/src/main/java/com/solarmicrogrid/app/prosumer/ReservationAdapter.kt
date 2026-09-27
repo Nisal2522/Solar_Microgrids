@@ -1,10 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: ReservationAdapter.kt
-// Purpose: RecyclerView adapter shared by the prosumer dashboard/history and the
-//          grid operator's approval queue. Renders one reservation card per row
-//          and colours the status pill to match the web console's palette.
-// Module owner: Member C (Booking Views & Operational Dashboards)
-// -----------------------------------------------------------------------------
 package com.solarmicrogrid.app.prosumer
 
 import android.view.LayoutInflater

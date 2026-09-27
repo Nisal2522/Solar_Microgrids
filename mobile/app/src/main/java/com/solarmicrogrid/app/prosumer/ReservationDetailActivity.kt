@@ -1,11 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: ReservationDetailActivity.kt
-// Purpose: Shows one reservation's full details, renders its transaction QR
-//          code once approved, and offers Modify/Cancel actions (the
-//          12-hour notice rule is enforced server-side; this screen just
-//          surfaces the API's rejection message when it fires).
-// Module owner: Member C (Reservation Workflow & Booking Management)
-// -----------------------------------------------------------------------------
 package com.solarmicrogrid.app.prosumer
 
 import android.app.AlertDialog

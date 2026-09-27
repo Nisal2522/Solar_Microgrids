@@ -1,11 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: ReservationFormActivity.kt
-// Purpose: Create a new reservation, or edit an existing one when launched
-//          with EXTRA_RESERVATION_ID. The 7-day booking window and 12-hour
-//          update notice rules are enforced by the API; this screen simply
-//          surfaces whatever validation message comes back.
-// Module owner: Member C (Reservation Workflow & Booking Management)
-// -----------------------------------------------------------------------------
 package com.solarmicrogrid.app.prosumer
 
 import android.app.DatePickerDialog

@@ -1,11 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: ReservationModels.kt
-// Purpose: Request/response data classes for the reservation workflow (create,
-//          update, cancel, approve, QR verify/complete) and the dashboard
-//          aggregations, mirroring the API's ReservationDtos.cs.
-// Module owner: Member C (Reservations & Booking Workflow) /
-//               Member D (QR verification)
-// -----------------------------------------------------------------------------
 package com.solarmicrogrid.app.data.model
 
 data class CreateReservationRequest(
