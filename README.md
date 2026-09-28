@@ -21,11 +21,14 @@ submission checklist.
 
 ## Git Repository
 
-https://github.com/Nisal2522/Solar_Microgrid.git
+https://github.com/Nisal2522/Solar_Microgrids
 
 ## Demo Video
 
-[INSERT VIDEO LINK — YouTube or OneDrive, max 5 minutes]
+https://mysliit-my.sharepoint.com/:f:/g/personal/it23334892_my_sliit_lk/IgCtGPX1-SZKTLuUgwzcuFFNAbd7-S9K6iZhpOfV5e6-ywM?e=BwX0Sj
+
+Duration: 4 minutes 49 seconds. Covers the web console (Backoffice), the
+Android app (Solar Prosumer) and Grid Operator mode on both clients.
 
 ## Individual Contribution
 
