@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Brand gradient used for avatars and emphasis chips. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient android:angle="135" android:startColor="#34D399" android:endColor="#047857" />
+    <corners android:radius="16dp" />
+</shape>
