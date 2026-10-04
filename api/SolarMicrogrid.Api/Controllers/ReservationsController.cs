@@ -1,3 +1,12 @@
+// -----------------------------------------------------------------------------
+// File: ReservationsController.cs
+// Purpose: Create/update/cancel reservations (Prosumer self-service via
+//          mobile, or Backoffice/GridOperator on a prosumer's behalf via
+//          web), plus the approve, QR-verify and complete workflow used by
+//          Grid Operators.
+// Module owner: Member C (create/update/cancel/history) /
+//               Member D (approve/verify-qr/complete)
+// -----------------------------------------------------------------------------
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarMicrogrid.Api.Dtos;
@@ -12,6 +21,7 @@ public class ReservationsController : ControllerBase
 {
     private readonly ReservationService _reservationService;
 
+    // Injects the reservation service.
     public ReservationsController(ReservationService reservationService)
     {
         _reservationService = reservationService;
@@ -48,10 +58,44 @@ public class ReservationsController : ControllerBase
         return Ok(await _reservationService.CancelAsync(id, callerNic, request));
     }
 
+    // Grid Operator/Backoffice approves a pending reservation, issuing its QR token.
+    [HttpPut("{id}/approve")]
+    [Authorize(Roles = "Backoffice,GridOperator")]
+    public async Task<ActionResult<ReservationResponse>> Approve(string id)
+    {
+        var approvedBy = User.FindFirst("fullName")?.Value ?? "Operator";
+        return Ok(await _reservationService.ApproveAsync(id, approvedBy));
+    }
+
+    // Grid Operator scans a prosumer's QR code; verifies it against the server record.
+    [HttpPost("verify-qr")]
+    [Authorize(Roles = "GridOperator")]
+    public async Task<ActionResult<ReservationResponse>> VerifyQr(VerifyQrRequest request)
+    {
+        return Ok(await _reservationService.VerifyQrAsync(request));
+    }
+
+    // Grid Operator finalises the energy transfer after a successful QR verification.
+    [HttpPut("{id}/complete")]
+    [Authorize(Roles = "GridOperator")]
+    public async Task<ActionResult<ReservationResponse>> Complete(string id)
+    {
+        var completedBy = User.FindFirst("fullName")?.Value ?? "Operator";
+        return Ok(await _reservationService.CompleteAsync(id, completedBy));
+    }
+
     // Lists a prosumer's full booking history (self, or Backoffice/GridOperator looking it up).
     [HttpGet("prosumer/{nic}")]
     public async Task<ActionResult<List<ReservationResponse>>> GetByProsumer(string nic)
     {
         return Ok(await _reservationService.GetByProsumerAsync(nic));
+    }
+
+    // Lists all reservations awaiting approval.
+    [HttpGet("pending")]
+    [Authorize(Roles = "Backoffice,GridOperator")]
+    public async Task<ActionResult<List<ReservationResponse>>> GetPending()
+    {
+        return Ok(await _reservationService.GetPendingAsync());
     }
 }

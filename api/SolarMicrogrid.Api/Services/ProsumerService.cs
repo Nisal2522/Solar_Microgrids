@@ -21,6 +21,7 @@ public class ProsumerService
     private readonly MongoDbContext _db;
     private readonly IWebHostEnvironment _env;
 
+    // Injects the database context and the host environment (for the photo upload folder).
     public ProsumerService(MongoDbContext db, IWebHostEnvironment env)
     {
         _db = db;

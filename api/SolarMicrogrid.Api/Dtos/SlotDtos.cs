@@ -1,3 +1,9 @@
+// -----------------------------------------------------------------------------
+// File: SlotDtos.cs
+// Purpose: Request/response payloads for generating and listing energy
+//          booking slots against a station.
+// Module owner: Member C (Reservations & Booking Workflow)
+// -----------------------------------------------------------------------------
 using SolarMicrogrid.Api.Models;
 
 namespace SolarMicrogrid.Api.Dtos;

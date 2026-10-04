@@ -26,6 +26,7 @@ public class JwtTokenService
 {
     private readonly JwtSettings _settings;
 
+    // Loads the JWT signing settings (key, issuer, audience, expiry) from configuration.
     public JwtTokenService(IOptions<JwtSettings> settings)
     {
         _settings = settings.Value;

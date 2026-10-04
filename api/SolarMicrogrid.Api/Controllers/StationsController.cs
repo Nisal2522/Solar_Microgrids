@@ -17,6 +17,7 @@ public class StationsController : ControllerBase
 {
     private readonly StationService _stationService;
 
+    // Injects the station service.
     public StationsController(StationService stationService)
     {
         _stationService = stationService;

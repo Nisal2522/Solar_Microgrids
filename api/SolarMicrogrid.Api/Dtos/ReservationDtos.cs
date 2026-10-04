@@ -1,3 +1,11 @@
+// -----------------------------------------------------------------------------
+// File: ReservationDtos.cs
+// Purpose: Request/response payloads for creating, updating, cancelling and
+//          viewing energy slot reservations, plus the QR-verification
+//          payload used by the Grid Operator mobile mode.
+// Module owner: Member C (Reservations & Booking Workflow) /
+//               Member D (QR verification)
+// -----------------------------------------------------------------------------
 using SolarMicrogrid.Api.Models;
 
 namespace SolarMicrogrid.Api.Dtos;
@@ -23,6 +31,11 @@ public class UpdateReservationRequest
 public class CancelReservationRequest
 {
     public string Reason { get; set; } = string.Empty;
+}
+
+public class VerifyQrRequest
+{
+    public string QrToken { get; set; } = string.Empty;
 }
 
 public class ReservationResponse
@@ -59,4 +72,11 @@ public class ProsumerDashboardResponse
     public int ActiveCount { get; set; }
     public int PendingCount { get; set; }
     public List<ReservationResponse> UpcomingReservations { get; set; } = new();
+}
+
+public class OperatorDashboardResponse
+{
+    public int PendingReservationsCount { get; set; }
+    public int ApprovedFutureReservationsCount { get; set; }
+    public List<ReservationResponse> PendingReservations { get; set; } = new();
 }

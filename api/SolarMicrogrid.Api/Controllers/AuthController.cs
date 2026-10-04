@@ -16,6 +16,7 @@ public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
 
+    // Injects the authentication service.
     public AuthController(AuthService authService)
     {
         _authService = authService;

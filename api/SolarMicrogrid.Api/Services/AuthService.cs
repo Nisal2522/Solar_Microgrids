@@ -19,6 +19,7 @@ public class AuthService
     private readonly MongoDbContext _db;
     private readonly JwtTokenService _tokenService;
 
+    // Injects the database context and the JWT token issuer.
     public AuthService(MongoDbContext db, JwtTokenService tokenService)
     {
         _db = db;

@@ -1,3 +1,12 @@
+// -----------------------------------------------------------------------------
+// File: ReservationService.cs
+// Purpose: Core power-trading reservation workflow — create (within a 7-day
+//          window), update/cancel (at least 12 hours' notice), approve, QR
+//          verification + completion, and the prosumer/operator dashboard
+//          aggregations. All rule enforcement lives here (FAT-service).
+// Module owner: Member C (create/update/cancel/dashboards) /
+//               Member D (approve/verify-qr/complete)
+// -----------------------------------------------------------------------------
 using MongoDB.Driver;
 using SolarMicrogrid.Api.Common;
 using SolarMicrogrid.Api.Data;
@@ -15,6 +24,7 @@ public class ReservationService
     private const int MaxAdvanceBookingDays = 7;
     private const int MinNoticeHours = 12;
 
+    // Injects the database context, slot capacity service and QR token service.
     public ReservationService(MongoDbContext db, SlotService slotService, QrTokenService qrTokenService)
     {
         _db = db;
@@ -91,6 +101,64 @@ public class ReservationService
         return ReservationResponse.FromModel(reservation);
     }
 
+    // Grid Operator/Backoffice approves a Pending reservation and issues its QR token.
+    public async Task<ReservationResponse> ApproveAsync(string id, string approvedBy)
+    {
+        var reservation = await GetByIdOrThrow(id);
+        if (reservation.Status != ReservationStatus.Pending)
+        {
+            throw new AppException("Only pending reservations can be approved.");
+        }
+
+        reservation.Status = ReservationStatus.Approved;
+        reservation.ApprovedBy = approvedBy;
+        reservation.ApprovedAt = DateTime.UtcNow;
+        reservation.QrToken = _qrTokenService.GenerateToken(reservation.Id!, reservation.ReservationCode);
+        reservation.UpdatedAt = DateTime.UtcNow;
+
+        await _db.Reservations.ReplaceOneAsync(r => r.Id == id, reservation);
+        return ReservationResponse.FromModel(reservation);
+    }
+
+    // Grid Operator scans a QR code; verifies its signature and returns the matching reservation.
+    public async Task<ReservationResponse> VerifyQrAsync(VerifyQrRequest request)
+    {
+        var reservationId = _qrTokenService.ValidateAndExtractReservationId(request.QrToken)
+            ?? throw new AppException("Invalid or tampered QR code.");
+
+        var reservation = await GetByIdOrThrow(reservationId);
+
+        if (reservation.QrToken != request.QrToken)
+        {
+            throw new AppException("QR code does not match the reservation record.");
+        }
+
+        if (reservation.Status != ReservationStatus.Approved)
+        {
+            throw new AppException("Reservation is not in an approved, ready-to-transfer state.");
+        }
+
+        return ReservationResponse.FromModel(reservation);
+    }
+
+    // Grid Operator finalises the energy transfer after a successful QR verification.
+    public async Task<ReservationResponse> CompleteAsync(string id, string completedBy)
+    {
+        var reservation = await GetByIdOrThrow(id);
+        if (reservation.Status != ReservationStatus.Approved)
+        {
+            throw new AppException("Only approved reservations can be completed.");
+        }
+
+        reservation.Status = ReservationStatus.Completed;
+        reservation.CompletedBy = completedBy;
+        reservation.CompletedAt = DateTime.UtcNow;
+        reservation.UpdatedAt = DateTime.UtcNow;
+
+        await _db.Reservations.ReplaceOneAsync(r => r.Id == id, reservation);
+        return ReservationResponse.FromModel(reservation);
+    }
+
     // Retrieves a single reservation by id (mobile detail/edit screens).
     public async Task<ReservationResponse> GetByIdAsync(string id)
     {
@@ -103,6 +171,14 @@ public class ReservationService
     {
         var reservations = await _db.Reservations.Find(r => r.ProsumerNic == prosumerNic)
             .SortByDescending(r => r.ScheduledDateTime).ToListAsync();
+        return reservations.Select(ReservationResponse.FromModel).ToList();
+    }
+
+    // Lists all reservations awaiting Grid Operator approval.
+    public async Task<List<ReservationResponse>> GetPendingAsync()
+    {
+        var reservations = await _db.Reservations.Find(r => r.Status == ReservationStatus.Pending)
+            .SortBy(r => r.ScheduledDateTime).ToListAsync();
         return reservations.Select(ReservationResponse.FromModel).ToList();
     }
 
@@ -121,6 +197,47 @@ public class ReservationService
                 .Select(ReservationResponse.FromModel)
                 .ToList()
         };
+    }
+
+    // Builds the Grid Operator dashboard: pending queue + count of approved future reservations.
+    public async Task<OperatorDashboardResponse> GetOperatorDashboardAsync()
+    {
+        var reservations = await _db.Reservations.Find(_ => true).ToListAsync();
+        var now = DateTime.UtcNow;
+
+        return new OperatorDashboardResponse
+        {
+            PendingReservationsCount = reservations.Count(r => r.Status == ReservationStatus.Pending),
+            ApprovedFutureReservationsCount = reservations.Count(r => r.Status == ReservationStatus.Approved && r.ScheduledDateTime > now),
+            PendingReservations = reservations
+                .Where(r => r.Status == ReservationStatus.Pending)
+                .OrderBy(r => r.ScheduledDateTime)
+                .Select(ReservationResponse.FromModel)
+                .ToList()
+        };
+    }
+
+    // Rejects scheduling more than 7 days out, or in the past.
+    private static void ValidateWithinBookingWindow(DateTime scheduledDateTime)
+    {
+        var now = DateTime.UtcNow;
+        if (scheduledDateTime < now)
+        {
+            throw new AppException("Reservation time must be in the future.");
+        }
+        if (scheduledDateTime > now.AddDays(MaxAdvanceBookingDays))
+        {
+            throw new AppException($"Reservations can only be scheduled within {MaxAdvanceBookingDays} days.");
+        }
+    }
+
+    // Rejects update/cancel when less than 12 hours remain before the scheduled time.
+    private static void ValidateMinimumNotice(DateTime scheduledDateTime)
+    {
+        if (scheduledDateTime - DateTime.UtcNow < TimeSpan.FromHours(MinNoticeHours))
+        {
+            throw new AppException($"Updates and cancellations require at least {MinNoticeHours} hours' notice.");
+        }
     }
 
     // Generates a short human-readable reservation code (e.g. RSV-A1B2C3).

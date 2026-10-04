@@ -19,6 +19,7 @@ public class UsersController : ControllerBase
 {
     private readonly UserService _userService;
 
+    // Injects the user service.
     public UsersController(UserService userService)
     {
         _userService = userService;
