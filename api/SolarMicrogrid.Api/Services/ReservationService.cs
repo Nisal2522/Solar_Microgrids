@@ -1,3 +1,12 @@
+// -----------------------------------------------------------------------------
+// File: ReservationService.cs
+// Purpose: Core power-trading reservation workflow — create (within a 7-day
+//          window), update/cancel (at least 12 hours' notice), approve, QR
+//          verification + completion, and the prosumer/operator dashboard
+//          aggregations. All rule enforcement lives here (FAT-service).
+// Module owner: Member C (create/update/cancel/dashboards) /
+//               Member D (approve/verify-qr/complete)
+// -----------------------------------------------------------------------------
 using MongoDB.Driver;
 using SolarMicrogrid.Api.Common;
 using SolarMicrogrid.Api.Data;
@@ -15,6 +24,7 @@ public class ReservationService
     private const int MaxAdvanceBookingDays = 7;
     private const int MinNoticeHours = 12;
 
+    // Injects the database context, slot capacity service and QR token service.
     public ReservationService(MongoDbContext db, SlotService slotService, QrTokenService qrTokenService)
     {
         _db = db;

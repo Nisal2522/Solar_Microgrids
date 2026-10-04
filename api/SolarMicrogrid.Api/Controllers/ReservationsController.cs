@@ -1,3 +1,12 @@
+// -----------------------------------------------------------------------------
+// File: ReservationsController.cs
+// Purpose: Create/update/cancel reservations (Prosumer self-service via
+//          mobile, or Backoffice/GridOperator on a prosumer's behalf via
+//          web), plus the approve, QR-verify and complete workflow used by
+//          Grid Operators.
+// Module owner: Member C (create/update/cancel/history) /
+//               Member D (approve/verify-qr/complete)
+// -----------------------------------------------------------------------------
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarMicrogrid.Api.Dtos;
@@ -12,6 +21,7 @@ public class ReservationsController : ControllerBase
 {
     private readonly ReservationService _reservationService;
 
+    // Injects the reservation service.
     public ReservationsController(ReservationService reservationService)
     {
         _reservationService = reservationService;

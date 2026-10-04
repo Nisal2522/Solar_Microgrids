@@ -1,3 +1,8 @@
+// -----------------------------------------------------------------------------
+// File: SlotsController.cs
+// Purpose: Creates and lists bookable energy slots for a given station.
+// Module owner: Member C (Reservations & Booking Workflow)
+// -----------------------------------------------------------------------------
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarMicrogrid.Api.Dtos;
@@ -12,6 +17,7 @@ public class SlotsController : ControllerBase
 {
     private readonly SlotService _slotService;
 
+    // Injects the slot service.
     public SlotsController(SlotService slotService)
     {
         _slotService = slotService;

@@ -17,6 +17,7 @@ public class ProsumersController : ControllerBase
 {
     private readonly ProsumerService _prosumerService;
 
+    // Injects the prosumer service.
     public ProsumersController(ProsumerService prosumerService)
     {
         _prosumerService = prosumerService;

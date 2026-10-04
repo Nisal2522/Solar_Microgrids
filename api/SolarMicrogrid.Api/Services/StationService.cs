@@ -18,6 +18,7 @@ public class StationService
     private readonly MongoDbContext _db;
     private readonly SlotService _slotService;
 
+    // Injects the database context and the slot service (for slot generation).
     public StationService(MongoDbContext db, SlotService slotService)
     {
         _db = db;

@@ -1,3 +1,11 @@
+// -----------------------------------------------------------------------------
+// File: EnergyReservation.cs
+// Purpose: MongoDB document model for the "EnergyReservation" collection — a
+//          prosumer's power-trading booking against an EnergyBookingSlot,
+//          including the QR-dispatch and grid-operator verification fields.
+// Module owner: Member C (Reservations & Booking Workflow) /
+//               Member D (QR verification, completion)
+// -----------------------------------------------------------------------------
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

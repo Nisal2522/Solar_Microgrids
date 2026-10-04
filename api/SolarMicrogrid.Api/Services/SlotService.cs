@@ -1,3 +1,9 @@
+// -----------------------------------------------------------------------------
+// File: SlotService.cs
+// Purpose: Creates and lists bookable energy time-slots for a station, and
+//          adjusts remaining capacity as reservations are made/cancelled.
+// Module owner: Member C (Reservations & Booking Workflow)
+// -----------------------------------------------------------------------------
 using MongoDB.Driver;
 using SolarMicrogrid.Api.Common;
 using SolarMicrogrid.Api.Data;
@@ -10,6 +16,7 @@ public class SlotService
 {
     private readonly MongoDbContext _db;
 
+    // Injects the database context.
     public SlotService(MongoDbContext db)
     {
         _db = db;

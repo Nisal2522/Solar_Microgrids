@@ -18,6 +18,7 @@ public class UserService
 {
     private readonly MongoDbContext _db;
 
+    // Injects the database context.
     public UserService(MongoDbContext db)
     {
         _db = db;

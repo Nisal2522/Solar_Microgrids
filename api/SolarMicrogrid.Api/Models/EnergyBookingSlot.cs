@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------------
+// File: EnergyBookingSlot.cs
+// Purpose: MongoDB document model for the "EnergyBookingSlots" collection —
+//          bookable time windows generated against a SolarStation that
+//          prosumers reserve via EnergyReservation documents.
+// Module owner: Member C (Reservations & Booking Workflow)
+// -----------------------------------------------------------------------------
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

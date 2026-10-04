@@ -16,6 +16,7 @@ public class QrTokenService
 {
     private readonly JwtSettings _settings;
 
+    // Loads the secret key used to sign and verify reservation QR tokens.
     public QrTokenService(IOptions<JwtSettings> settings)
     {
         _settings = settings.Value;
