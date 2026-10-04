@@ -36,6 +36,11 @@ public class EnergyReservation
     public DateTime? CancelledAt { get; set; }
     public string? CancelReason { get; set; }
 
+    public string? ApprovedBy { get; set; }
+    public DateTime? ApprovedAt { get; set; }
+    public string? CompletedBy { get; set; }
+    public DateTime? CompletedAt { get; set; }
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

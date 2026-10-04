@@ -25,6 +25,11 @@ public class CancelReservationRequest
     public string Reason { get; set; } = string.Empty;
 }
 
+public class VerifyQrRequest
+{
+    public string QrToken { get; set; } = string.Empty;
+}
+
 public class ReservationResponse
 {
     public string Id { get; set; } = string.Empty;
@@ -59,4 +64,11 @@ public class ProsumerDashboardResponse
     public int ActiveCount { get; set; }
     public int PendingCount { get; set; }
     public List<ReservationResponse> UpcomingReservations { get; set; } = new();
+}
+
+public class OperatorDashboardResponse
+{
+    public int PendingReservationsCount { get; set; }
+    public int ApprovedFutureReservationsCount { get; set; }
+    public List<ReservationResponse> PendingReservations { get; set; } = new();
 }
